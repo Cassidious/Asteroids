@@ -1,14 +1,10 @@
-# this allows us to use code from
-# the open-source pygame library
-# throughout this file
-
+import sys
 import pygame
-
 from constants import *
-from player import *
-from circleshape import *
+from player import Player
 from asteroid import Asteroid
-from asteroidfield import *
+from asteroidfield import AsteroidField
+from shot import Shot
 
 def main():
     pygame.init()
@@ -38,10 +34,15 @@ def main():
         for thing in updatable:
             thing.update(dt)
         
-        for thing in asteroids:
-            if thing.collides_with(player) == True:
+        for asteroid in asteroids:
+            if asteroid.collides_with(player) == True:
                 return print("Game Over!")
                 sys.exit()
+
+        for shot in shots:
+            if asteroid.collides_with(shot) == True:
+                shot.kill()
+                asteroid.kill()
         
         screen.fill("black")
         for thing in drawable:
